@@ -4,7 +4,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 
 target_size = (250, 150)
-batch_size = 30
+batch_size = 40
 epochs = 15
 directory = 'dataset'
 validation_split = 0.25
@@ -12,15 +12,15 @@ validation_split = 0.25
 def train_tanks():
     # Defines & compiles the model
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Conv2D(16, (3, 3), activation='relu', input_shape=(250, 150, 3)),
+        tf.keras.layers.Conv2D(128, (5, 5), activation='relu', input_shape=(250, 150, 3)),
         tf.keras.layers.MaxPooling2D(2, 2),
         keras.layers.Dropout(rate=0.05),  # adding dropout regularization throughout the model to deal with overfitting
         # The second convolution
-        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
         keras.layers.Dropout(rate=0.10),
         # The third convolution
-        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
         keras.layers.Dropout(rate=0.15),
 
@@ -33,7 +33,7 @@ def train_tanks():
         tf.keras.layers.Dense(8, activation='softmax')
     ])
 
-    adam = tf.keras.optimizers.Adam(learning_rate=0.0001)
+    adam = tf.keras.optimizers.Adam(learning_rate=0.0005)
     model.compile(loss='categorical_crossentropy',
                   optimizer=adam,
                   metrics=['acc'])
