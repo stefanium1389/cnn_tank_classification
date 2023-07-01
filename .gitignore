@@ -121,3 +121,5 @@ fabric.properties
 .idea/pythonProject1.iml
 .idea/misc.xml
 .idea/pythonProject1.iml
+*.xml
+*.iml
