@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 target_size = (250, 150)
 batch_size = 30
-epochs = 10
+epochs = 15
 directory = 'dataset'
 validation_split = 0.25
 
@@ -33,7 +33,7 @@ def train_tanks():
         tf.keras.layers.Dense(8, activation='softmax')
     ])
 
-    adam = tf.keras.optimizers.Adam(learning_rate=0.0005)
+    adam = tf.keras.optimizers.Adam(learning_rate=0.0001)
     model.compile(loss='categorical_crossentropy',
                   optimizer=adam,
                   metrics=['acc'])
