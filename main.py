@@ -17,28 +17,36 @@ validation_split = 0.20
 
 def create_model():
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Conv2D(16, (5, 5), padding='same', activation='relu', input_shape=(250, 150, 3)),
+        tf.keras.layers.Conv2D(8, (3, 3), activation='relu', input_shape=(250, 150, 3)),
         tf.keras.layers.MaxPooling2D(2, 2),
-        keras.layers.Dropout(rate=0.05),  # adding dropout regularization throughout the model to deal with overfitting
-        tf.keras.layers.BatchNormalization(),
+        #keras.layers.Dropout(rate=0.25),  # adding dropout regularization throughout the model to deal with overfitting
+        #tf.keras.layers.BatchNormalization(),
         # The second convolution
-        tf.keras.layers.Conv2D(32, (3, 3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(0.00005),
+        tf.keras.layers.Conv2D(16, (5, 5), #kernel_regularizer=tf.keras.regularizers.l2(0.0001),
                                activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-        keras.layers.Dropout(rate=0.10),
-        tf.keras.layers.BatchNormalization(),
+        #keras.layers.Dropout(rate=0.25),
+        #tf.keras.layers.BatchNormalization(),
         # The third convolution
-        tf.keras.layers.Conv2D(64, (3, 3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(0.00005),
+        tf.keras.layers.Conv2D(32, (9, 9), #kernel_regularizer=tf.keras.regularizers.l2(0.0001),
                                activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-        keras.layers.Dropout(rate=0.15),
-        tf.keras.layers.BatchNormalization(),
+        #keras.layers.Dropout(rate=0.25),
+        #tf.keras.layers.BatchNormalization(),
+
+        # The third convolution
+        tf.keras.layers.Conv2D(64, (11, 11),  # kernel_regularizer=tf.keras.regularizers.l2(0.0001),
+                               activation='relu'),
+        tf.keras.layers.MaxPooling2D(2, 2),
+        # keras.layers.Dropout(rate=0.25),
+        # tf.keras.layers.BatchNormalization(),
 
         # Flatten the results to feed into a DNN
         tf.keras.layers.Flatten(),
         # neuron hidden layer
-        tf.keras.layers.Dense(256, activation='relu'),
-        keras.layers.Dropout(rate=0.25),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(64, activation='relu'),
+        # keras.layers.Dropout(rate=0.5),
         # 8 output neuron for the 8 classes of Tank Images
         tf.keras.layers.Dense(8, activation='softmax')
     ])
@@ -50,7 +58,7 @@ def train_tanks():
     print(model.summary())
 
     adam = tf.keras.optimizers.Adam(learning_rate=0.001)
-    reduce_rate = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=math.sqrt(0.1), patience=5)
+    reduce_rate = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=math.sqrt(0.1), patience=4)
     #
     model.compile(loss='categorical_crossentropy',
                   optimizer=adam,
