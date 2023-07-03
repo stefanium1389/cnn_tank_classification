@@ -9,8 +9,8 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
 
 target_size = (250, 150)
-batch_size = 32
-epochs = 10
+batch_size = 64
+epochs = 20
 directory = "dataset"
 test_directory = "test"
 validation_split = 0.20
@@ -31,21 +31,20 @@ def create_model():
         tf.keras.layers.Conv2D(32, (9, 9), #kernel_regularizer=tf.keras.regularizers.l2(0.0001),
                                activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-        #keras.layers.Dropout(rate=0.25),
-        #tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.BatchNormalization(),
 
-        # The third convolution
+        # The 4th convolution
         tf.keras.layers.Conv2D(64, (11, 11),  # kernel_regularizer=tf.keras.regularizers.l2(0.0001),
                                activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-        # keras.layers.Dropout(rate=0.25),
-        # tf.keras.layers.BatchNormalization(),
+        keras.layers.Dropout(rate=0.15),
 
         # Flatten the results to feed into a DNN
         tf.keras.layers.Flatten(),
         # neuron hidden layer
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dense(512, activation='relu'),
+
+        tf.keras.layers.Dropout(0.25),
         # keras.layers.Dropout(rate=0.5),
         # 8 output neuron for the 8 classes of Tank Images
         tf.keras.layers.Dense(8, activation='softmax')
@@ -57,11 +56,11 @@ def train_tanks():
     model = create_model()
     print(model.summary())
 
-    adam = tf.keras.optimizers.Adam(learning_rate=0.001)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
     reduce_rate = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=math.sqrt(0.1), patience=4)
     #
     model.compile(loss='categorical_crossentropy',
-                  optimizer=adam,
+                  optimizer=optimizer,
                   metrics=['acc'])
 
     # Creates an instance of an ImageDataGenerator called train_datagen, and a train_generator, train_datagen.flow_from_directory
@@ -97,7 +96,9 @@ def train_tanks():
         validation_data=validation_generator,
         #validation_steps=validation_steps,
         verbose=1,
-        callbacks=[reduce_rate])
+        callbacks=[reduce_rate]
+        )
+
     display_graph(history)
 
     # displays accuracy of training
