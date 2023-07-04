@@ -1,4 +1,4 @@
-## CNN Tank Classification
+# CNN Tank Classification
 
 # Аутор: Стефан Богдановић, SV44/2020
 
@@ -7,16 +7,7 @@
 
 # Покретање
 Потребно је само покренути main.py након прављења виртуелног окружења и инсталирања свих библиотека
-import math
-import os
-import cv2
-import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix, classification_report
-
+os,numpy,cv2,tensorflow,matplotlib.pyplot,seaborn,sklearn
 библиотеке које се користе 
 
 
