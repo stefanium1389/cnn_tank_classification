@@ -19,34 +19,17 @@ def create_model():
     model = tf.keras.models.Sequential([
         tf.keras.layers.Conv2D(8, (3, 3), activation='relu', input_shape=(250, 150, 3)),
         tf.keras.layers.MaxPooling2D(2, 2),
-        #keras.layers.Dropout(rate=0.25),  # adding dropout regularization throughout the model to deal with overfitting
-        #tf.keras.layers.BatchNormalization(),
-        # The second convolution
-        tf.keras.layers.Conv2D(16, (5, 5), #kernel_regularizer=tf.keras.regularizers.l2(0.0001),
-                               activation='relu'),
+        tf.keras.layers.Conv2D(16, (5, 5), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
-        #keras.layers.Dropout(rate=0.25),
-        #tf.keras.layers.BatchNormalization(),
-        # The third convolution
-        tf.keras.layers.Conv2D(32, (9, 9), #kernel_regularizer=tf.keras.regularizers.l2(0.0001),
-                               activation='relu'),
+        tf.keras.layers.Conv2D(32, (9, 9), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
         tf.keras.layers.BatchNormalization(),
-
-        # The 4th convolution
-        tf.keras.layers.Conv2D(64, (11, 11),  # kernel_regularizer=tf.keras.regularizers.l2(0.0001),
-                               activation='relu'),
+        tf.keras.layers.Conv2D(64, (11, 11), activation='relu'),
         tf.keras.layers.MaxPooling2D(2, 2),
         keras.layers.Dropout(rate=0.15),
-
-        # Flatten the results to feed into a DNN
         tf.keras.layers.Flatten(),
-        # neuron hidden layer
         tf.keras.layers.Dense(512, activation='relu'),
-
         tf.keras.layers.Dropout(0.25),
-        # keras.layers.Dropout(rate=0.5),
-        # 8 output neuron for the 8 classes of Tank Images
         tf.keras.layers.Dense(8, activation='softmax')
     ])
     return model
